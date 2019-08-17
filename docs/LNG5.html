@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+        
+ <div id="map"></div>
+
+      
+      <link rel="stylesheet" href="leaflet.css" type="text/css" crossorigin="">
+      
+    
+     <script src="leaflet.js" crossorigin=""></script>
+      <script src="LNGDummy.js"></script>
+    
+      <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }s
+        html, body, #map {
+            height: 600px;
+            width: 1200px;
+        }
+           .leaflet-container .leaflet-control-attribution {
+      font-size: 6px;
+    }
+
+
+
+.easy-button-button {
+  display: block !important;
+}
+
+.tag-filter-tags-container {
+  left: 30px;
+}
+
+
+
+    </style>
+       
+        <script type="text/javascript">
+
+var map;
+
+function init() {
+  // create map and set center and zoom level, zoomsnap makes fractional zoom levels possible
+  map = new L.map('map', {
+    zoomSnap: 0.25
+});
+
+
+
+
+
+
+
+
+
+// rough centre point and zoom level to make the whole country visibles
+  map.setView([27.83,20.585],2.5);
+
+  //logo position: bottomright, topright, topleft, bottomleft
+    var logo = L.control({position: 'bottomright'});
+    logo.onAdd = function(map){
+        var div = L.DomUtil.create('div', 'myclass');
+        div.innerHTML= "<img src='logo2.png'/>";
+        return div;
+    }
+    logo.addTo(map);
+
+  // create and add the tile layer
+ // The tile size coupled with the zoomoffset makes the resolution better
+ 
+ var upscaled = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+ 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+   
+	  
+	  }).addTo(map);
+
+
+var lngLayer;
+
+var LNGIcon = L.icon({
+  iconUrl: "Markerblue.png",
+  iconSize: [16,16]
+});
+
+var RegasLNGIcon = L.icon({
+  iconUrl: "Markerred.png",
+  iconSize: [16,16]
+});
+
+
+ // handle click events on pantry features
+function LNGOnEachFeature(feature, marker) {
+    
+        marker.bindPopup("<p style= font-size:8px><b>" + "Terminal: " + "</b>" +  feature.properties.AssetName + "<br>" + "<b>"  + "Operator: " + "</b>" +  feature.properties.Operator + "<br>" + "<b>" + "Country: " + "</b>" + feature.properties.Country  + "<br>" + "<b>" + "Type: " + "</b>" + feature.properties.AssetType  + "<br>" + "<b>" + "Ownership: " + "</b>" + feature.properties.AssetOwnership, {    maxWidth : 160
+} );
+    
+}
+
+
+
+
+
+// add the afs GeoJSON layer using the afsData variable from afs.js
+
+
+function regas(feature){
+if(feature.properties.AssetType == "LNG Regasification") return true
+}
+
+var regasLayer = L.geoJSON(LNGData,{
+  filter: regas,
+  pointToLayer: function (feature, latlng) {
+    return L.marker(latlng, {icon: RegasLNGIcon, title: feature.properties.AssetName         
+        });
+  },
+  onEachFeature: LNGOnEachFeature
+  }
+);    
+
+function liquefaction(feature){
+if(feature.properties.AssetType == "LNG Project") return true
+}
+
+var liquefactionLayer = L.geoJSON(LNGData,{
+  filter: liquefaction,
+  pointToLayer: function (feature, latlng) {
+    return L.marker(latlng, {icon: LNGIcon}, { opacity : 1 }, {
+            tags: ['small', 'red']
+        });
+  },
+  onEachFeature: LNGOnEachFeature
+  }
+);  
+               
+
+//regasLayer.addTo(map);
+//liquefactionLayer.addTo(map);
+
+var allterminals = L.layerGroup([liquefactionLayer, regasLayer]);
+var Liquefaction = L.layerGroup([liquefactionLayer]);
+var Regasification = L.layerGroup([regasLayer]);
+var overlayMaps = {
+    "Liquefaction  <img src='Markerblue.png'height=16>" :Liquefaction,
+    "Regasification  <img src='Markerred.png'height=16>" : Regasification,
+    "All Terminals" : allterminals
+};
+
+//L.control.layers(overlayMaps, { collapsed: false }).addTo(map);
+  control = L.control.layers(overlayMaps,null, { collapsed: false }, {sd: allterminals.addTo(map) }).addTo(map);
+
+
+
+
+ //L.icon({
+ // iconUrl: "Images/Markerblue.png",
+ // iconSize: [16,16]
+//}
+//{icon: RegasLNGIcon, title: feature.properties.AssetName         
+        
+
+/*Legend specific*/
+var legend = L.control({ position: "topright" });
+
+legend.onAdd = function(map) {
+  var div = ("div", "legend");
+  div.innerHTML += '<i style="background: #477AC2"></i><span>Liquefaction</span><br>';
+  div.innerHTML += '<i style="background: #448D40"></i><span>Regasification</span><br>';
+ 
+//"Images/Markerblue.png"
+  //div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
+  
+  
+
+  return div;
+  };
+
+  legend.addTo(map);
+
+map.fitBounds(LNGLayer.getBounds());
+
+
+
+
+
+
+          
+}
+
+</script>
+    </head>
+      <body onload="init()">
+       
+
+       
+       
+           
+        </div>
+      </body>
+  </html>
