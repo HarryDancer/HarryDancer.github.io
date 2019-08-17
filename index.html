@@ -83,12 +83,12 @@ function init() {
 var lngLayer;
 
 var LNGIcon = L.icon({
-  iconUrl: "Images/Markerblue.png",
+  iconUrl: "Markerblue.png",
   iconSize: [16,16]
 });
 
 var RegasLNGIcon = L.icon({
-  iconUrl: "Images/Markerred.png",
+  iconUrl: "Markerred.png",
   iconSize: [16,16]
 });
 
@@ -145,8 +145,8 @@ var allterminals = L.layerGroup([liquefactionLayer, regasLayer]);
 var Liquefaction = L.layerGroup([liquefactionLayer]);
 var Regasification = L.layerGroup([regasLayer]);
 var overlayMaps = {
-    "Liquefaction  <img src='Images/Markerblue.png'height=16>" :Liquefaction,
-    "Regasification  <img src='Images/Markerred.png'height=16>" : Regasification,
+    "Liquefaction  <img src='Markerblue.png'height=16>" :Liquefaction,
+    "Regasification  <img src='Markerred.png'height=16>" : Regasification,
     "All Terminals" : allterminals
 };
 
