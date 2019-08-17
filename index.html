@@ -51,7 +51,7 @@ function init() {
   map.setView([27.83,20.585],2.5);
 
   //logo position: bottomright, topright, topleft, bottomleft
-    var logo = L.control({position: 'bottomright'});
+    var logo = L.control({position: 'bottomleft'});
     logo.onAdd = function(map){
         var div = L.DomUtil.create('div', 'myclass');
         div.innerHTML= "<img src='logo2.png'/>";
