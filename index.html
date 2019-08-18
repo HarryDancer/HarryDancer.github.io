@@ -7,10 +7,8 @@
  <div id="map"></div>
 
       
-      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
-      <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" type="text/css" crossorigin="">
+      <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
       <script src="LNGDummy.js"></script>
     
     
@@ -20,8 +18,8 @@
             margin: 2;
         }s
         html, body, #map {
-            height: 900px;
-            width: 1350px;
+            height: 800px;
+            width: 1200px;
         }
            .leaflet-container .leaflet-control-attribution {
       font-size: 6px;
@@ -75,10 +73,10 @@ function init() {
  // The tile size coupled with the zoomoffset makes the resolution better
  
  var upscaled = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
- 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
+  attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
    
-	  
-	  }).addTo(map);
+    
+    }).addTo(map);
 
 
 var lngLayer;
@@ -146,13 +144,13 @@ var allterminals = L.layerGroup([liquefactionLayer, regasLayer]);
 var Liquefaction = L.layerGroup([liquefactionLayer]);
 var Regasification = L.layerGroup([regasLayer]);
 var overlayMaps = {
-    "Liquefaction  <img src='Images/Markerblue.png'height=16>" :Liquefaction,
-    "Regasification  <img src='Images/Markerred.png'height=16>" : Regasification,
+    "Liquefaction  <img src='Markerblue.png'height=16>" :Liquefaction,
+    "Regasification  <img src='Markerred.png'height=16>" : Regasification,
     "All Terminals" : allterminals
 };
 
 //L.control.layers(overlayMaps, { collapsed: false }).addTo(map);
-  control = L.control.layers(overlayMaps,null, { collapsed: false }, {sd: allterminals.addTo(map) }).addTo(map);
+  control = L.control.layers(overlayMaps,null, { collapsed: false }, {position: 'topright'}, {sd: allterminals.addTo(map) }).addTo(map);
 
 
 
@@ -165,22 +163,12 @@ var overlayMaps = {
         
 
 /*Legend specific*/
-var legend = L.control({ position: "topright" });
 
-legend.onAdd = function(map) {
-  var div = ("div", "legend");
-  div.innerHTML += '<i style="background: #477AC2"></i><span>Liquefaction</span><br>';
-  div.innerHTML += '<i style="background: #448D40"></i><span>Regasification</span><br>';
  
 //"Images/Markerblue.png"
   //div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
   
   
-
-  return div;
-  };
-
-  legend.addTo(map);
 
 map.fitBounds(LNGLayer.getBounds());
 
