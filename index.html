@@ -79,6 +79,12 @@ function init() {
    
     
     }).addTo(map);
+  
+  var satellite = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+    attribution: 'Copyright Google Maps',
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+});
 
 
 var lngLayer;
@@ -150,9 +156,15 @@ var overlayMaps = {
     "Regasification  <img src='markerred.png'height=16>" : Regasification,
     "All Terminals" : allterminals
 };
+  
+  var baseMaps = {
+  "Street Map": upscaled,
+  "Satellite": satellite
+};
 
 //L.control.layers(overlayMaps, { collapsed: false }).addTo(map);
   control = L.control.layers(overlayMaps,null, { collapsed: false }, {position: 'topright'}, {sd: allterminals.addTo(map) }).addTo(map);
+   control2 = L.control.layers(baseMaps, null, { collapsed: false }, {position: 'topright'}, {sd: upscaled.addTo(map)}).addTo(map);
 
 
 
