@@ -92,7 +92,7 @@ var RegasLNGIcon = L.icon({
  // handle click events on markers
 function LNGOnEachFeature(feature, marker) {
     
-        marker.bindPopup("<p style= font-size:8px><b>" + "Terminal: " + "</b>" +  feature.properties.AssetName + "<br>" + "<b>"  + "Operator: " + "</b>" +  feature.properties.Operator + "<br>" + "<b>" + "Country: " + "</b>" + feature.properties.Country  + "<br>" + "<b>" + "Type: " + "</b>" + feature.properties.AssetType  + "<br>" + "<b>" + "Ownership: " + "</b>" + feature.properties.AssetOwnership, {    maxWidth : 160
+        marker.bindPopup("<p style= font-size:10px><b>" + "Terminal: " + "</b>" +  feature.properties.AssetName + "<br>" + "<b>"  + "Operator: " + "</b>" +  feature.properties.Operator + "<br>" + "<b>" + "Country: " + "</b>" + feature.properties.Country  + "<br>" + "<b>" + "Type: " + "</b>" + feature.properties.AssetType  + "<br>" + "<b>" + "Ownership: " + "</b>" + feature.properties.AssetOwnership, {    maxWidth : 160
 } );
     
 }
