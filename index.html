@@ -27,18 +27,6 @@
       font-size: 9px;
     }
 
-
-
-.easy-button-button {
-  display: block !important;
-}
-
-.tag-filter-tags-container {
-  left: 30px;
-}
-
-
-
     </style>
        
         <script type="text/javascript">
@@ -50,13 +38,6 @@ function init() {
   map = new L.map('map', {
     zoomSnap: 0.25
 });
-
-
-
-
-
-
-
 
 
 // rough centre point and zoom level to make the whole country visibles
@@ -71,8 +52,8 @@ function init() {
     }
     logo.addTo(map);
 
-  // create and add the tile layer
- // The tile size coupled with the zoomoffset makes the resolution better
+  // create and add the tile layers
+
  
  var upscaled = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
   attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012',
@@ -100,7 +81,7 @@ var RegasLNGIcon = L.icon({
 });
 
 
- // handle click events on pantry features
+ // handle click events on markers
 function LNGOnEachFeature(feature, marker) {
     
         marker.bindPopup("<p style= font-size:8px><b>" + "Terminal: " + "</b>" +  feature.properties.AssetName + "<br>" + "<b>"  + "Operator: " + "</b>" +  feature.properties.Operator + "<br>" + "<b>" + "Country: " + "</b>" + feature.properties.Country  + "<br>" + "<b>" + "Type: " + "</b>" + feature.properties.AssetType  + "<br>" + "<b>" + "Ownership: " + "</b>" + feature.properties.AssetOwnership, {    maxWidth : 160
@@ -108,11 +89,7 @@ function LNGOnEachFeature(feature, marker) {
     
 }
 
-
-
-
-
-// add the afs GeoJSON layer using the afsData variable from afs.js
+// Create regasification layer and liquefaction layer from Geojson loaded earlier via .js file
 
 
 function regas(feature){
@@ -144,10 +121,7 @@ var liquefactionLayer = L.geoJSON(LNGData,{
   }
 );  
                
-
-//regasLayer.addTo(map);
-//liquefactionLayer.addTo(map);
-
+//Create overlays
 var allterminals = L.layerGroup([liquefactionLayer, regasLayer]);
 var Liquefaction = L.layerGroup([liquefactionLayer]);
 var Regasification = L.layerGroup([regasLayer]);
@@ -156,40 +130,19 @@ var overlayMaps = {
     "Regasification  <img src='markerred.png'height=16>" : Regasification,
     "All Terminals" : allterminals
 };
-  
+ 
+  //Create basemaps
   var baseMaps = {
   "Street Map": upscaled,
   "Satellite": satellite
 };
 
-//L.control.layers(overlayMaps, { collapsed: false }).addTo(map);
+//Create control for overlays and basemaps. Combining these controls doesn't work well in the native Leaflet control
   control = L.control.layers(overlayMaps,null, { collapsed: false }, {position: 'topright'}, {sd: allterminals.addTo(map) }).addTo(map);
    control2 = L.control.layers(baseMaps, null, { collapsed: false }, {position: 'topright'}, {sd: upscaled.addTo(map)}).addTo(map);
 
 
-
-
- //L.icon({
- // iconUrl: "Images/Markerblue.png",
- // iconSize: [16,16]
-//}
-//{icon: RegasLNGIcon, title: feature.properties.AssetName         
-        
-
-/*Legend specific*/
-
- 
-//"Images/Markerblue.png"
-  //div.innerHTML += '<i class="icon" style="background-image: url(https://d30y9cdsu7xlg0.cloudfront.net/png/194515-200.png);background-repeat: no-repeat;"></i><span>Grænse</span><br>';
-  
-  
-
 map.fitBounds(LNGLayer.getBounds());
-
-
-
-
-
 
           
 }
